@@ -13,7 +13,7 @@
 ## Installation
 
 ```bash
-npm install -g gitsum
+npm install -g gitsums
 ```
 
 ## Usage
