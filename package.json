@@ -1,12 +1,17 @@
 {
-  "name": "gitsum",
-  "version": "0.0.2",
+  "name": "gitsums",
+  "version": "0.0.3",
   "description": "Small utility to generate description for git changes with ai",
   "scripts": {
     "lint": "eslint . --ext .ts --fix",
-    "start": "tsx src/index.ts"
+    "start": "tsx src/index.ts",
+    "build": "node esbuild.config.js"
+  },
+  "bin": {
+    "gitsum": "./dist/index.js"
   },
   "main": "index.ts",
+  "type": "module",
   "repository": "https://github.com/AlioshaRabeshko/gitsum.git",
   "author": "Oleksiy Rabeshko <Leflylll@gmail.com>",
   "license": "MIT",
@@ -23,6 +28,7 @@
     "@types/yargs": "^17.0.33",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.31.1",
+    "esbuild": "^0.25.3",
     "eslint": "^9.25.1",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3",
