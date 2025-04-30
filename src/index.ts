@@ -30,6 +30,7 @@ if (argv['set-key']) {
   }
 
   saveChatGptApiKey(apiKey);
+  process.exit(0);
 }
 
 function getGitDiff(): string {
@@ -50,15 +51,15 @@ function getGitDiff(): string {
 }
 
 async function main() {
-  const diff = getGitDiff();
-  console.info('🔍 Analyzing git diff...');
-
   const chatGptApiKey = getChatGptApiKey();
   if (!chatGptApiKey) {
     console.error('❌ API key is not found. Use --set-key <api_key> or set OPENAI_API_KEY env');
     process.exit(1);
   }
   const chatGptClient = new ChatGptClient(chatGptApiKey);
+
+  const diff = getGitDiff();
+  console.info('🔍 Analyzing git diff...');
   const summary = await chatGptClient.analyzeDiff(diff);
 
   console.info('📝 Summary of changes:');
