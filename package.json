@@ -1,6 +1,6 @@
 {
   "name": "gitsums",
-  "version": "0.0.3",
+  "version": "0.1.0",
   "description": "Small utility to generate description for git changes with ai",
   "scripts": {
     "lint": "eslint . --ext .ts --fix",
@@ -8,7 +8,7 @@
     "build": "node esbuild.config.js"
   },
   "bin": {
-    "gitsum": "./dist/index.js"
+    "gitsum": "./dist/index.cjs"
   },
   "main": "index.ts",
   "type": "module",

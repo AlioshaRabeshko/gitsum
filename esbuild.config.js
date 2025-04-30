@@ -11,6 +11,9 @@ esbuild
 		target: 'node14',
 		format: 'cjs',
 		minify: true,
+		banner: {
+			js: '#!/usr/bin/env node',
+		},
 	})
 	.then(() => {
 		const distDir = path.join(path.dirname(new URL(import.meta.url).pathname), 'dist');
