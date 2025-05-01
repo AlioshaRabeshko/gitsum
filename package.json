@@ -1,11 +1,12 @@
 {
   "name": "gitsums",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Small utility to generate description for git changes with ai",
   "scripts": {
     "lint": "eslint . --ext .ts --fix",
     "start": "tsx src/index.ts",
-    "build": "node esbuild.config.js"
+    "build": "node esbuild.config.js",
+    "test": "jest"
   },
   "bin": {
     "gitsum": "./dist/index.cjs"
@@ -18,20 +19,38 @@
   "dependencies": {
     "openai": "^4.96.2",
     "simple-git": "^3.27.0",
+    "winston": "^3.17.0",
     "yargs": "^17.7.2"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.15.3",
     "@types/yargs": "^17.0.33",
     "@typescript-eslint/eslint-plugin": "^8.31.1",
     "@typescript-eslint/parser": "^8.31.1",
     "esbuild": "^0.25.3",
     "eslint": "^9.25.1",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.3.2",
+    "ts-node": "^10.9.2",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.31.1"
-  }
+  },
+  "keywords": [
+    "git",
+    "git-summary",
+    "ai",
+    "openai",
+    "gpt",
+    "git-diff",
+    "code-analysis",
+    "risk-analysis",
+    "developer-tools",
+    "cli",
+    "git-cli"
+  ]
 }
