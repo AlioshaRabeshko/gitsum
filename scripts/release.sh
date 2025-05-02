@@ -12,7 +12,8 @@ yarn lint \
   && chmod +x dist/index.cjs \
   && cat .gitignore | awk '$0!~"dist"{print}' > ~.gitignore \
   && mv ~.gitignore .gitignore \
-  && yarn changelog > changelog.txt \
+  && yarn link \
+  && gitsums -c 1 --custom > changelog.txt \
   && git add . \
   && git commit -m $VERSION \
   && git tag $VERSION \
