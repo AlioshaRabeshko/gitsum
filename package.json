@@ -1,6 +1,6 @@
 {
   "name": "gitsums",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Small utility to generate description for git changes with ai",
   "scripts": {
     "lint": "eslint . --ext .ts",
