@@ -1,0 +1,7 @@
+yarn run v1.22.22
+$ node dist/index.cjs -c 1 --custom
+# Release 0.3.3
+
+- Bumped version from 0.3.2 to 0.3.3
+- Fixed release script: removed trailing backslash on `gh release create` command
+Done in 2.37s.
