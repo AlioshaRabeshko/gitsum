@@ -1,0 +1,13 @@
+yarn run v1.22.22
+$ node dist/index.cjs -c 1 --custom
+# Release 0.3.1
+
+- Updated `.gitsumsrc` to clarify the custom prompt format for release notes (return as md without quotes).
+- Modified `package.json`:
+  - Bumped version to 0.3.1.
+  - Changed `changelog` script to output changelog directly to stdout.
+- Updated `scripts/release.sh`:
+  - Redirect changelog output to `changelog.txt`.
+  - Use GitHub CLI to create a release with changelog as release notes.
+  - Clean up git history after release creation.
+Done in 3.67s.
