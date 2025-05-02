@@ -20,4 +20,5 @@ yarn lint \
   && gh release create $VERSION \
     --title $VERSION \
     --notes-file changelog.txt \
+    --latest \\
   && git reset --hard HEAD~1
