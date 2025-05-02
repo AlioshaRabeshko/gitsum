@@ -1,0 +1,5 @@
+{
+  "model": "gpt-4.1-mini",
+  "ignoreFiles": ["yarn.lock", "src/index.cjs"],
+  "customPrompt": "Generate short and concise releases notes based on this git diff, return in md format"
+}

@@ -108,4 +108,27 @@ describe('ChatGptService', () => {
       await expect(chatGptService.analyzeRisks(mockDiff)).rejects.toThrow('OpenAI API error');
     });
   });
+
+  describe('Custom Prompt', () => {
+    it('should return a response for a custom prompt', async () => {
+      const {chatGptService, mockCreateResponse} = getInstance();
+      const mockDiff = 'diff --git a/file4.txt b/file4.txt\n--- a/file4.txt\n+++ b/file4.txt\n@@ -1 +1 @@\n-Text\n+Content';
+      const mockPrompt = 'Custom prompt for analysis.';
+      const mockResponse = {output_text: 'Custom analysis result for file4.txt.'};
+
+      mockCreateResponse.mockResolvedValue(mockResponse);
+
+      const result = await chatGptService.customPrompt(mockDiff, mockPrompt);
+
+      expect(mockCreateResponse).toHaveBeenCalledWith(
+        {
+          model: MOCK_MODEL,
+          instructions: mockPrompt,
+          input: mockDiff,
+        },
+        {timeout: CHAT_GPT_TIMEOUT}
+      );
+      expect(result).toBe(mockResponse.output_text);
+    });
+  });
 });

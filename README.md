@@ -1,6 +1,6 @@
-# gitsum
+# gitsums
 
-`gitsum` is a small utility that uses AI to generate summaries and analyze risks for Git changes. It helps developers quickly understand the impact of their commits or branch differences.
+`gitsums` is a small utility that uses AI to generate summaries and analyze risks for Git changes. It helps developers quickly understand the impact of their commits or branch differences.
 
 ## Features
 
@@ -9,6 +9,7 @@
 - Manage ignored files for analysis.
 - Compare changes between branches or recent commits.
 - Save and manage OpenAI API keys securely.
+- Customize prompts for AI analysis.
 
 ## Installation
 
@@ -23,48 +24,57 @@ npm install -g gitsums
 #### Analyze Recent Commits
 Generate a summary of changes for the last `N` commits:
 ```bash
-gitsum -c <N>
+gitsums -c <N>
 ```
 
 #### Compare Branches
 Generate a summary of changes between two branches:
 ```bash
-gitsum -b <branch1> <branch2>
+gitsums -b <branch1> <branch2>
 ```
 
 #### Analyze Risks
 Analyze potential risks in the changes:
 ```bash
-gitsum -c <N> -r
+gitsums -c <N> -r
+```
+
+#### Custom Prompt
+Use an additional flag to use custom prompt for AI analysis:
+```bash
+gitsums -c <N> -C
+```
+Set a custom prompt:
+```bash
+gitsums --set-custom "<your_custom_prompt>"
 ```
 
 #### Manage Ignored Files
 Add a file to the ignore list:
 ```bash
-gitsum -ia <file>
+gitsums -ia <file>
 ```
 
 Remove a file from the ignore list:
 ```bash
-gitsum -ir <file>
+gitsums -ir <file>
 ```
 
 View the ignore list:
 ```bash
-gitsum -il
+gitsums -il
 ```
-Ignored files are excluded from the diff analysis. You can add or remove files from the ignore list using the commands below or by editing the configuration file directly.
+Ignored files are excluded from the diff analysis. You can add or remove files from the ignore list using the commands above or by editing the configuration file directly.
 
-#### OpenAI API settings
+#### OpenAI API Settings
 Save your OpenAI API key for authentication:
 ```bash
-gitsum -k <api_key>
-
+gitsums -k <api_key>
 ```
-Save your Chat GPT model (gpt-4.1-nano by default):
-```bash
-gitsum -m <model>
 
+Save your Chat GPT model (default: `gpt-4.1-nano`):
+```bash
+gitsums -m <model>
 ```
 
 Alternatively, you can set the API key using the `OPENAI_API_KEY` environment variable:
@@ -75,17 +85,22 @@ export OPENAI_API_KEY=<api_key>
 ### Example
 Analyze the last 3 commits and summarize the changes:
 ```bash
-gitsum -c 3
+gitsums -c 3
 ```
 
 Compare changes between `main` and `feature` branches:
 ```bash
-gitsum -b main feature
+gitsums -b main feature
 ```
 
 Analyze risks for the last 5 commits:
 ```bash
-gitsum -c 5 -r
+gitsums -c 5 -r
+```
+
+Use a custom prompt to generate release notes:
+```bash
+gitsums -C
 ```
 
 ### Error Handling
@@ -102,7 +117,16 @@ The tool stores its configuration in a file located at:
 ~/.git-summary-cli/config.json
 ```
 
-This file is automatically created if it does not exist. You can manually edit this file to update settings like the API key or ignored files.
+This file is automatically created if it does not exist. You can manually edit this file to update settings like the API key, ignored files, or custom prompts.
+
+Additionally, you can use a `.gitsumsrc` file in your project directory to override global settings. Example `.gitsumsrc`:
+```json
+{
+  "model": "gpt-4.1-mini",
+  "ignoreFiles": ["yarn.lock", "src/index.cjs"],
+  "customPrompt": "Generate short and concise release notes based on this git diff"
+}
+```
 
 ## Requirements
 
@@ -126,7 +150,7 @@ npm start
 npm run lint
 ```
 
-### Unit tests
+### Unit Tests
 ```bash
 npm run test
 ```
@@ -138,4 +162,4 @@ This project is licensed under the [MIT License](LICENSE).
 ## Author
 
 Created by [Oleksiy Rabeshko](https://github.com/AlioshaRabeshko).  
-Feel free to contribute or open issues on the [GitHub repository](https://github.com/AlioshaRabeshko/gitsum).
+Feel free to contribute or open issues on the [GitHub repository](https://github.com/AlioshaRabeshko/gitsums).

@@ -4,10 +4,22 @@ if [[ -n $(git status -s) ]]; then
 fi
 
 VERSION=v$(cat package.json | awk 'BEGIN{FS="\""}/"version"/{print $4}')
+! [ -z $(git tag -l $VERSION) ] && echo "Tag already exists" && exit 1
 
-yarn build
-chmod +x dist/index.cjs
-cat .gitignore | awk '$0!~"dist"{print}' > ~.gitignore
-mv ~.gitignore .gitignore
-npm publish
-git reset --hard origin/master
+yarn lint \
+  && yarn test \
+  && yarn build \
+  && chmod +x dist/index.cjs \
+  && cat .gitignore | awk '$0!~"dist"{print}' > ~.gitignore \
+  && mv ~.gitignore .gitignore \
+  && yarn changelog \
+  && git add . \
+  && git commit -m $VERSION \
+  && git tag $VERSION \
+  && git push --tags origin \
+  && git reset --hard HEAD~1
+
+
+
+# npm publish
+# git reset --hard origin/master
