@@ -1,0 +1,7 @@
+# Release 0.3.4
+
+## Changes
+- Updated version to 0.3.4
+- Removed deprecated `changelog` script from package.json
+- Updated `release.sh` to generate changelog using `gitsums` CLI with custom options
+- Added `yarn link` command in release script for proper linking before changelog generation
