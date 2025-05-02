@@ -12,14 +12,12 @@ yarn lint \
   && chmod +x dist/index.cjs \
   && cat .gitignore | awk '$0!~"dist"{print}' > ~.gitignore \
   && mv ~.gitignore .gitignore \
-  && yarn changelog \
+  && yarn changelog > changelog.txt \
   && git add . \
   && git commit -m $VERSION \
   && git tag $VERSION \
   && git push --tags origin \
+  && gh release create $VERSION \
+    --title $VERSION \
+    --notes-file changelog.txt \
   && git reset --hard HEAD~1
-
-
-
-# npm publish
-# git reset --hard origin/master
