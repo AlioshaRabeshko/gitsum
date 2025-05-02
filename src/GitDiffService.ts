@@ -4,11 +4,16 @@ import {promisify} from 'util';
 const execPromise = promisify(exec);
 
 class GitDiffService {
-  constructor(private readonly ignoreFiles: string[], private exec = execPromise) {}
+  constructor(
+    private readonly ignoreFiles: string[],
+    private onSuccess: (message: string) => void,
+    private onError: (error: string) => void,
+    private exec = execPromise
+  ) {}
   
   async getCommitsDiff(commits: number): Promise<string> {
     if (!commits) {
-      console.error('❌ Please specify --commits N');
+      this.onError('❌ Please specify --commits N');
       return '';
     }
 
@@ -17,7 +22,7 @@ class GitDiffService {
       const {stdout} = await this.exec(`git diff HEAD~${commits} HEAD`);
       diff = stdout;
     } catch (error) {
-      console.error('❌ Failed to get git diff:', error);
+      this.onError(`❌ Failed to get git diff: ${error}`);
       return '';
     }
     
@@ -26,7 +31,7 @@ class GitDiffService {
   
   async getBranchesDiff(branches: string[]): Promise<string> {
     if (!branches || branches.length !== 2) {
-      console.error('❌ Please specify --branches a b');
+      this.onError('❌ Please specify --branches a b');
       return '';
     }
   
@@ -35,7 +40,7 @@ class GitDiffService {
       const {stdout} = await this.exec(`git diff ${branches[0]}..${branches[1]}`);
       diff = stdout;
     } catch (error) {
-      console.error('❌ Failed to get git diff:', error);
+      this.onError(`❌ Failed to get git diff: ${error}`);
       return '';
     }
     

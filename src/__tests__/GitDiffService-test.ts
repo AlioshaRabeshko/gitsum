@@ -1,8 +1,10 @@
 import GitDiffService from '../GitDiffService';
 
 function getInstance(ignoreFiles = ['ignored-file.txt', 'node_modules/some-file.js']) {
-  const mockExec = jest.fn()
-  const gitDiffService = new GitDiffService(ignoreFiles, mockExec);
+  const mockExec = jest.fn();
+  const mockOnSuccess = jest.fn();
+  const mockOnError = jest.fn();
+  const gitDiffService = new GitDiffService(ignoreFiles, mockOnSuccess, mockOnError, mockExec);
   return {gitDiffService, mockExec};
 }
 

@@ -17,6 +17,11 @@ class ChatGptService extends OpenAI {
     return response.output_text;
   }
 
+  async customPrompt(diff: string, prompt: string) {
+    const response = await this.analyze(diff, prompt);
+    return response.output_text;
+  }
+
   private async analyze(diff: string, instructions: string) {
     const response = await this.responses.create({
       model: this.model,

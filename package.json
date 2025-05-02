@@ -1,15 +1,17 @@
 {
   "name": "gitsums",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Small utility to generate description for git changes with ai",
   "scripts": {
-    "lint": "eslint . --ext .ts --fix",
+    "lint": "eslint . --ext .ts",
     "start": "tsx src/index.ts",
     "build": "node esbuild.config.js",
-    "test": "jest"
+    "test": "jest",
+    "changelog": "node dist/index.cjs -c 1 --custom > CHANGELOG.md"
   },
   "bin": {
-    "gitsum": "./dist/index.cjs"
+    "gitsum": "./dist/index.cjs",
+    "gitsums": "./dist/index.cjs"
   },
   "main": "index.ts",
   "type": "module",

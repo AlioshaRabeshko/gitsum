@@ -10,19 +10,22 @@ function getInstance() {
     access: jest.fn<(path: PathLike) => Promise<void>>(),
   };
 
-  const configService = new ConfigService(mockFileSystem as any);
+  const mockOnError = jest.fn();
+  const mockOnSuccess = jest.fn();
 
-  return {configService, mockFileSystem};
+  const configService = new ConfigService(mockOnSuccess, mockOnError, mockFileSystem as any);
+
+  return {configService, mockFileSystem, mockOnError, mockOnSuccess};
 }
 
 describe('Config', () => {
-  describe('getConfig', () => {
+  describe('getPublicConfig', () => {
     it('should return the parsed config if the file exists and is valid', async () => {
       const {configService, mockFileSystem} = getInstance();
-      const mockConfig = {apiKey: 'test-key', ignoreFiles: ['node_modules'], model: 'gpt-4.1-nano'};
+      const mockConfig = {apiKey: 'test-key', ignoreFiles: ['node_modules'], model: 'gpt-4.1-nano', customPrompt: ''};
       mockFileSystem.readFile.mockResolvedValue(JSON.stringify(mockConfig));
 
-      const result = await configService.getConfig();
+      const result = await configService.getPublicConfig();
 
       expect(mockFileSystem.readFile).toHaveBeenCalledWith(CONFIG_PATH, 'utf-8');
       expect(result).toEqual(mockConfig);
@@ -32,7 +35,7 @@ describe('Config', () => {
       const {configService, mockFileSystem} = getInstance();
       mockFileSystem.readFile.mockRejectedValue({code: 'ENOENT'});
 
-      const result = await configService.getConfig();
+      const result = await configService.getPublicConfig();
 
       expect(mockFileSystem.readFile).toHaveBeenCalledWith(CONFIG_PATH, 'utf-8');
       expect(result).toEqual(DEFAULT_CONFIG);
@@ -42,7 +45,7 @@ describe('Config', () => {
       const {configService, mockFileSystem} = getInstance();
       mockFileSystem.readFile.mockResolvedValue('invalid-json');
 
-      const result = await configService.getConfig();
+      const result = await configService.getPublicConfig();
 
       expect(mockFileSystem.readFile).toHaveBeenCalledWith(CONFIG_PATH, 'utf-8');
       expect(result).toEqual(DEFAULT_CONFIG);
@@ -56,7 +59,7 @@ describe('Config', () => {
       mockFileSystem.readFile.mockResolvedValue(JSON.stringify(mockConfig));
       mockFileSystem.writeFile.mockResolvedValue(undefined);
 
-      const newConfig = {apiKey: 'new-key', ignoreFiles: ['dist'], model: 'gpt-3.5-turbo'};
+      const newConfig = {apiKey: 'new-key', ignoreFiles: ['dist'], model: 'gpt-3.5-turbo', customPrompt: ''};
       await configService.updateConfig(() => newConfig);
 
       expect(mockFileSystem.writeFile).toHaveBeenCalledWith(
@@ -74,7 +77,7 @@ describe('Config', () => {
       mockFileSystem.mkdir.mockResolvedValue(undefined);
       mockFileSystem.writeFile.mockResolvedValue(undefined);
 
-      const newConfig = {apiKey: 'test-key', ignoreFiles: [], model: 'gpt-3.5-turbo'};
+      const newConfig = {apiKey: 'test-key', ignoreFiles: [], model: 'gpt-3.5-turbo', customPrompt: ''};
       await configService.saveConfig(newConfig);
 
       expect(mockFileSystem.mkdir).toHaveBeenCalledWith(expect.any(String), {recursive: true});
@@ -90,7 +93,7 @@ describe('Config', () => {
       mockFileSystem.access.mockResolvedValue(undefined);
       mockFileSystem.writeFile.mockResolvedValue(undefined);
 
-      const newConfig = {apiKey: 'test-key', ignoreFiles: [], model: 'gpt-3.5-turbo'};
+      const newConfig = {apiKey: 'test-key', ignoreFiles: [], model: 'gpt-3.5-turbo', customPrompt: ''};
       await configService.saveConfig(newConfig);
 
       expect(mockFileSystem.mkdir).not.toHaveBeenCalled();
@@ -123,20 +126,22 @@ describe('Config', () => {
       expect(result).toBe('config-key');
     });
 
-    it('should return null if no API key is found', async () => {
+    it('should throw error if no API key is found', async () => {
       const {configService, mockFileSystem} = getInstance();
       mockFileSystem.readFile.mockResolvedValue(JSON.stringify(DEFAULT_CONFIG));
 
-      const result = await configService.getChatGptApiKey();
-
-      expect(result).toBeNull();
+      try {
+        await configService.getChatGptApiKey();
+      } catch (error) {
+        expect(error).toEqual(new Error('API key is required.'));
+      }
     });
   });
 
   describe('saveChatGptApiKey', () => {
     it('should save the API key to the config', async () => {
       const {configService, mockFileSystem} = getInstance();
-      const mockConfig = {apiKey: null, ignoreFiles: [], model: 'gpt-4.1-nano'};
+      const mockConfig = {apiKey: null, ignoreFiles: [], model: 'gpt-4.1-nano', customPrompt: ''};
       mockFileSystem.readFile.mockResolvedValue(JSON.stringify(mockConfig));
       mockFileSystem.writeFile.mockResolvedValue(undefined);
 
@@ -144,7 +149,7 @@ describe('Config', () => {
 
       expect(mockFileSystem.writeFile).toHaveBeenCalledWith(
         CONFIG_PATH,
-        JSON.stringify({apiKey: 'new-key', ignoreFiles: [], model: 'gpt-4.1-nano'}, null, 2),
+        JSON.stringify({apiKey: 'new-key', ignoreFiles: [], model: 'gpt-4.1-nano', customPrompt: ''}, null, 2),
         'utf-8'
       );
     });
