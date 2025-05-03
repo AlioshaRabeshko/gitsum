@@ -31,7 +31,6 @@ jobs:
           yarn lint
           yarn test
           yarn build
-          yarn link
 
       - name: Remove dist from .gitignore
         run: |
@@ -50,7 +49,7 @@ jobs:
 
       - name: Create GitHub release
         run: |
-          gitsums -c 1 --custom > changelog.md
+          npx gitsums -f origin/${{ github.event.pull_request.base.ref }} -t origin/${{ github.event.pull_request.head.ref }} --custom > changelog.md
           gh release create "$VERSION" \
             --title "$VERSION" \
             --notes-file changelog.md
