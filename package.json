@@ -18,6 +18,7 @@
   "author": "Oleksiy Rabeshko <Leflylll@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@dqbd/tiktoken": "^1.0.21",
     "openai": "^4.96.2",
     "simple-git": "^3.27.0",
     "winston": "^3.17.0",

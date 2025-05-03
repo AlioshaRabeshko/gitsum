@@ -31,6 +31,16 @@ const argv = yargs(hideBin(process.argv))
     type: 'boolean',
     describe: 'Custom ChatGPT prompt',
   })
+  .option('from', {
+    alias: 'f',
+    type: 'string',
+    describe: 'Get diff from a specific commit hash or branch',
+  })
+  .option('to', {
+    alias: 't',
+    type: 'string',
+    describe: 'Get diff to a specific commit hash or branch',
+  })
   .option('set-key', {
     alias: 'k',
     type: 'string',
@@ -99,14 +109,16 @@ async function main() {
   if (argv['set-custom']) {
     return await mainController.setCustomPrompt(argv['set-custom']);
   }
+
+  const branches = argv['branches'] || [argv['from'], argv['to']];
   if (argv['custom']) {
-    return await mainController.customPrompt(argv['commits'], argv['branches']);
+    return await mainController.customPrompt(argv['commits'], branches);
   }
   if (argv['risks']) {
-    return await mainController.analyzeRisks(argv['commits'], argv['branches']);
+    return await mainController.analyzeRisks(argv['commits'], branches);
   }
 
-  return await mainController.analyzeChanges(argv['commits'], argv['branches']);
+  return await mainController.analyzeChanges(argv['commits'], branches);
 }
 
 main().catch((error) => {

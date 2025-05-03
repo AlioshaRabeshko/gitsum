@@ -32,5 +32,6 @@ module.exports = {
     'dist/**',
     'node_modules/**',
     'generated/**',
+    'coverage/**'
   ],
 };
