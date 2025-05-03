@@ -91,22 +91,23 @@ async function main() {
     }
   );
 
-  if (argv['set-key']) {
+  console.log(argv);
+  if (argv.hasOwnProperty('set-key')) {
     return await mainController.setKey(argv['set-key']);
   }
-  if (argv['set-model']) {
+  if (argv.hasOwnProperty('set-model')) {
     return await mainController.setModel(argv['set-model']);
   }
-  if (argv['ia']) {
+  if (argv.hasOwnProperty('ia')) {
     return await mainController.addIgnoreFile(argv['ia']);
   }
-  if (argv['ir']) {
+  if (argv.hasOwnProperty('ir')) {
     return await mainController.removeIgnoreFile(argv['ir']);
   }
-  if (argv['il']) {
+  if (argv.hasOwnProperty('il')) {
     return await mainController.getIgnoreList();
   }
-  if (argv['set-custom']) {
+  if (argv.hasOwnProperty('set-custom')) {
     return await mainController.setCustomPrompt(argv['set-custom']);
   }
 
