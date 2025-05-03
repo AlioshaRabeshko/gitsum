@@ -34,9 +34,9 @@ jobs:
           yarn link
 
       - name: Remove dist from .gitignore
-        run: cat .gitignore | awk '$0!~"dist"{print}' > .gitignore_tmp \
-        run: mv .gitignore_tmp .gitignore
-
+        run: |
+          cat .gitignore | awk '$0!~"dist"{print}' > .gitignore_tmp
+          mv .gitignore_tmp .gitignore
 
       - name: Bump version and create tag
         id: version
