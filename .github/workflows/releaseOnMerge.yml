@@ -13,7 +13,6 @@ jobs:
     permissions:
       contents: write
       pull-requests: read
-      secrets: read
 
     steps:
       - name: Checkout code
@@ -52,6 +51,7 @@ jobs:
 
       - name: Create GitHub release
         run: |
+          env | grep "OPENAI"
           npx gitsums -f origin/${{ github.event.pull_request.base.ref }} -t origin/${{ github.event.pull_request.head.ref }} --custom > changelog.md
           gh release create "$VERSION" \
             --title "$VERSION" \
