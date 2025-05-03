@@ -31,6 +31,8 @@ jobs:
           yarn lint
           yarn test
           yarn build
+          chmod +x dist/index.cjs
+          cp node_modules/@dqbd/tiktoken/tiktoken_bg.wasm dist/
 
       - name: Remove dist from .gitignore
         run: |
