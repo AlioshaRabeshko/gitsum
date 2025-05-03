@@ -2,7 +2,6 @@ import ChatGptService from './ChatGptService';
 import ConfigService from './ConfigService';
 import GitDiffService from './GitDiffService';
 
-
 class MainController {
   constructor(
     private configService: ConfigService,
