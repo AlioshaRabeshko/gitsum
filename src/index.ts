@@ -91,7 +91,6 @@ async function main() {
     }
   );
 
-  console.log(argv);
   if (argv.hasOwnProperty('set-key')) {
     return await mainController.setKey(argv['set-key']);
   }
